@@ -1,23 +1,23 @@
-import pyDes
-import base64
+import pyDes                 #import library pyDes
+import base64                #import library base64
 import sys
 import io
-from tkinter import *
+from tkinter import *        #import library tkinter for GUI
 from tkinter import filedialog
 from pyDes import *
 
 root = Tk()
 root.geometry("400x400")
 root.title("Image Encryption")
-ivInt = bytearray("AStringOfIV=", "utf-8")
-keyInt = bytearray("aKeyOfSomeKindThat+IWillNotShare", "utf-8")
+ivInt = bytearray("AStringOfIV=", "utf-8")                                 #key1
+keyInt = bytearray("aKeyOfSomeKindThat+IWillNotShare", "utf-8")            #key2
 lst = []
 string1 = StringVar()
 string2 = StringVar()
 
 
-def select_image():
-    imgToEncrypt = filedialog.askopenfile(mode='r', filetypes=[('jpg file', '*.jpg'), ('png file', '*.png')])
+def select_image():                                                                                                
+    imgToEncrypt = filedialog.askopenfile(mode='r', filetypes=[('jpg file', '*.jpg'), ('png file', '*.png')])         #reading image
 b = Button(root, text="Select Image", command=select_image)
 b.place(x=130, y=60)
 
@@ -29,7 +29,7 @@ def encrypt_image():
         lst.append(f1)
         f.close()
         data = jpgdata
-    k = pyDes.triple_des(base64.b64decode(keyInt), mode=pyDes.CBC, IV=base64.b64decode(ivInt),pad=None, padmode=pyDes.PAD_PKCS5)
+    k = pyDes.triple_des(base64.b64decode(keyInt), mode=pyDes.CBC, IV=base64.b64decode(ivInt),pad=None, padmode=pyDes.PAD_PKCS5)    #encryption
     print ("please wait for a moment")
     jpgdata = k.encrypt(data)
     with open('Encrypted.jpg', 'wb') as f:
@@ -48,7 +48,7 @@ def decrypt_image():
         lst.append(f1)
         f.close()
         data = jpgdata
-    k = pyDes.triple_des(base64.b64decode(keyInt), mode=pyDes.CBC, IV=base64.b64decode(ivInt), padmode=pyDes.PAD_PKCS5)
+    k = pyDes.triple_des(base64.b64decode(keyInt), mode=pyDes.CBC, IV=base64.b64decode(ivInt), padmode=pyDes.PAD_PKCS5)       #decryption
     print ("please wait for a moment")
     jpgdata = k.decrypt(data)
     with open('Decrypted.jpg', 'wb') as f:
